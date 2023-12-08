@@ -2,10 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "./BaseOFTWithFee.sol";
 
-contract OFTWithFee is BaseOFTWithFee, ERC20 {
+contract OFTWithFee is BaseOFTWithFee, ERC20Pausable {
 
     uint internal immutable ld2sdRate;
 
@@ -51,5 +52,13 @@ contract OFTWithFee is BaseOFTWithFee, ERC20 {
 
     function _ld2sdRate() internal view virtual override returns (uint) {
         return ld2sdRate;
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
     }
 }
